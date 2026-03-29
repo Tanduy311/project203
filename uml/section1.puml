@@ -28,15 +28,23 @@ class Customer {
   +toString(): String
 }
 
-class ProductFactory {
-  +createProduct(productType, brand, license, price, lotNumber, manufacturedCountry): AProduct
+interface ProductFactory {
+  +createProduct(brand, license, price, lotNumber, manufacturedCountry): AProduct
+}
+
+class MedicineFactory {
+  +createProduct(brand, license, price, lotNumber, manufacturedCountry): AProduct
+}
+
+class ToyFactory {
+  +createProduct(brand, license, price, lotNumber, manufacturedCountry): AProduct
 }
 
 class Order {
   -products: List<AProduct>
   -customer: Customer
   -orderedDate: LocalDate
-  +addProduct(...): void
+  +addProduct(factory, brand, license, price, lotNumber, manufacturedCountry): void
   +getTotalPrice(): Double
   +generateReceipt(): void
 }
@@ -54,7 +62,9 @@ AProduct <|-- Medicine
 AProduct <|-- Toy
 Order o-- Customer : customer
 Order o-- "0..*" AProduct : products
-Order ..> ProductFactory : uses
+ProductFactory <|.. MedicineFactory
+ProductFactory <|.. ToyFactory
+Order ..> ProductFactory : uses (DI)
 OrderingService o-- "0..*" Customer
 OrderingService o-- "0..*" Order
 @enduml

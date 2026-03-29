@@ -48,14 +48,17 @@ public class Order {
     }
 
     public void addProduct(
-            String productType,
+            ProductFactory factory,
             String brand,
             String license,
             Double price,
             String lotNumber,
             String manufacturedCountry) {
-        AProduct product = ProductFactory.createProduct(
-                productType, brand, license, price, lotNumber, manufacturedCountry);
+        if (factory == null) {
+            throw new IllegalArgumentException("factory must not be null");
+        }
+        AProduct product = factory.createProduct(
+                brand, license, price, lotNumber, manufacturedCountry);
         this.products.add(product);
     }
 
