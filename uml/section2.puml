@@ -1,0 +1,29 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Product {
+  -name: String
+  -license: String
+  -price: Double
+  +Product(builder: ProductBuilder)
+  +displayInfor(): void
+}
+
+class "Product.ProductBuilder" as ProductBuilder {
+  -name: String
+  -license: String
+  -price: Double
+  +setName(name: String): ProductBuilder
+  +setLicense(license: String): ProductBuilder
+  +setPrice(price: Double): ProductBuilder
+  +build(): Product
+}
+
+class Demonstration {
+  +main(args: String[]): void
+}
+
+Product +-- ProductBuilder
+ProductBuilder ..> Product : build()
+Demonstration ..> Product
+@enduml

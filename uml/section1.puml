@@ -1,0 +1,60 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class AProduct {
+  -license: String
+  -brand: String
+  -price: Double
+  +calculateCost(): Double
+  +toString(): String
+}
+
+class Medicine {
+  -lotNumber: String
+  +calculateCost(): Double
+  +toString(): String
+}
+
+class Toy {
+  -manufacturedCountry: String
+  +calculateCost(): Double
+  +toString(): String
+}
+
+class Customer {
+  -id: String
+  -name: String
+  -phoneNumber: String
+  +toString(): String
+}
+
+class ProductFactory {
+  +createProduct(productType, brand, license, price, lotNumber, manufacturedCountry): AProduct
+}
+
+class Order {
+  -products: List<AProduct>
+  -customer: Customer
+  -orderedDate: LocalDate
+  +addProduct(...): void
+  +getTotalPrice(): Double
+  +generateReceipt(): void
+}
+
+class OrderingService {
+  -customers: List<Customer>
+  -orders: List<Order>
+  +addCustomer(customer): void
+  +addOrder(order): void
+  +orderProducts(customer, products): void
+  +printAllOrders(): void
+}
+
+AProduct <|-- Medicine
+AProduct <|-- Toy
+Order o-- Customer : customer
+Order o-- "0..*" AProduct : products
+Order ..> ProductFactory : uses
+OrderingService o-- "0..*" Customer
+OrderingService o-- "0..*" Order
+@enduml
